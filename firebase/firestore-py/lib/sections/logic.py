@@ -37,7 +37,7 @@ def get_sections(course_names, section_teachers, faculty_names, zoom_links):
       # If this teacher has different links to different secions, set it 
       # to the link attached to their id.
       # If there is no zoom link attached to an email or a course id, leave it empty.
-      zoom_link = zoom_links[faculty_names[value].email] if faculty_names[value].email in zoom_links else zoom_links[key] if key in zoom_links else ""
+      zoom_link = zoom_links[key] if key in zoom_links else zoom_links[faculty_names[value].email] if faculty_names[value].email in zoom_links else ""
     )
     for key, value in section_teachers.items()
   ]
