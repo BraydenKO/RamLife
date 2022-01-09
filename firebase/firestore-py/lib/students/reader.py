@@ -20,7 +20,7 @@ def read_periods():
 	homeroom_locations = {}
 	periods = defaultdict(list)
 	with open(utils.dir.section_schedule) as file: 
-		for row in csv.DictReader(file): 
+		for row in csv.DictReader(file):
 			if row ["SCHOOL_ID"] != "Upper": continue
 			section_id = row ["SECTION_ID"]
 			day = row ["WEEKDAY_NAME"]
@@ -28,12 +28,13 @@ def read_periods():
 			room = row ["ROOM"]
 
 			# Handle homerooms
-			try: period_num = int(period_str)
+			try: 
+				period_num = int(period_str)
+				
 			except ValueError: 
 				if period_str == "HOMEROOM": 
 					homeroom_locations [section_id] = room
 				continue
-
 			periods [section_id].append(data.Period(
 				day = day,
 				room = room, 
