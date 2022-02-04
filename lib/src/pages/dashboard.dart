@@ -24,14 +24,19 @@ class Dashboard extends NavigationItem<DashboardModel> {
 	AppBar get appBar => AppBar(
 		title: const Text("Dashboard"),
 		actions: [
-		if (model.schedule.hasSchool)
-			Builder(
-				builder: (BuildContext context) => TextButton(
-					onPressed: () => Scaffold.of(context).openEndDrawer(),
-					child: const Text ("Tap for schedule",
-						style: TextStyle(color: Colors.blue),
-					),
-				)
+		ResponsiveBuilder(
+			builder: (_, LayoutInfo layout, __)  =>
+				!layout.hasStandardSideSheet && model.schedule.hasSchool
+				? Builder(
+						builder: (BuildContext context) => TextButton(
+							onPressed: () => Scaffold.of(context).openEndDrawer(),
+							child: const Icon(
+								Icons.schedule,
+								color: Colors.white
+							),
+						)
+					)
+				: const SizedBox.shrink()
 			)
 		]
 	);

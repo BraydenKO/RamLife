@@ -48,8 +48,10 @@ class DashboardModel with ChangeNotifier {
 	/// update user data, sign out and sign back in.
 	Future<void> refresh(VoidCallback onFailure) async {
 		try {
+			await Services.instance.database.user.signIn();
 			await Services.instance.database.calendar.signIn();
 			await Services.instance.database.sports.signIn();
+			await Models.instance.user.init();
 			await schedule.initCalendar();
 		} catch (error) {  // ignore: avoid_catches_without_on_clauses
 			// We just want to allow the user to retry. But still rethrow.
