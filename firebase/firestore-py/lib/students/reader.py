@@ -26,12 +26,11 @@ def read_periods():
 			day = row ["WEEKDAY_NAME"]
 			period_str = row ["BLOCK_NAME"]
 			room = row ["ROOM"]
-
 			# Handle homerooms
 			try: 
-				period_num = int(period_str)
+				period_num = int(float(period_str))
 				
-			except ValueError: 
+			except ValueError:
 				if period_str == "HOMEROOM": 
 					homeroom_locations [section_id] = room
 				continue

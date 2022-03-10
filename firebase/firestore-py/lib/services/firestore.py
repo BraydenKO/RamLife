@@ -1,4 +1,4 @@
-from firebase_admin import firestore
+from firebase_admin import _DEFAULT_APP_NAME, firestore
 from .firebase import app
 from .. import data
 
@@ -8,6 +8,7 @@ students = _firestore.collection("students")
 calendar = _firestore.collection("calendar")
 courses = _firestore.collection("classes")
 feedback = _firestore.collection("feedback")
+dataRefresh = _firestore.collection("dataRefresh")
 
 def upload_users(users): 
 	batch = _firestore.batch()
@@ -34,3 +35,13 @@ def get_feedback(): return [
 	data.Feedback.from_json(document.to_dict())
 	for document in feedback.get()
 ]
+
+def upload_userdate(date):
+	dataRefresh.document("dataRefresh").update({
+		"user": date
+	}) 
+
+def upload_caldate(date):
+	dataRefresh.document("dataRefresh").update({
+		"calendar": date
+	}) 

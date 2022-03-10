@@ -24,7 +24,7 @@ if __name__ == "__main__":
       section_teachers = section_teachers
     ) 
   )
-
+  
   periods = utils.logger.log_value(
     "periods", student_reader.read_periods
   )
