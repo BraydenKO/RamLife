@@ -10,7 +10,7 @@ def read_students():
 			first = row ["First Name"],
 			last = row ["Last Name"],
 			email = row ["Email"].lower(),
-			id = row ["ID"],
+			id = str(int(float(row ["ID"]))),
 		)
 		for row in csv.DictReader(file)
 		if row ["ID"] not in utils.constants.corrupted_students
@@ -29,7 +29,7 @@ def read_periods():
 			# Handle homerooms
 			try: 
 				period_num = int(float(period_str))
-				
+				 
 			except ValueError:
 				if period_str == "HOMEROOM": 
 					homeroom_locations [section_id] = room

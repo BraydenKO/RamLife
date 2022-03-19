@@ -8,11 +8,18 @@ No function in this class actually performs logic on data, just returns it.
 his helps keep the program modular, by separating the data sources from
 the data indexing.
 '''
-
+# fixes ids of form "90070.0" to look like "90070"
+# but allows ids of CADV
+def fix_id(id):
+  try:
+    return str(int(float(id)))
+  except ValueError:
+    return id
+    
 def get_course_names():
   with open(dir.courses) as file:
     return {
-      row["Course ID"] : row["Course Name"]
+      fix_id(row["Course ID"]): row["Course Name"]
       for row in csv.DictReader(file) 
       if row["School ID"] == "Upper"}
   
@@ -23,7 +30,7 @@ def get_section_faculty_ids():
       for row in csv.DictReader(file)
       if row["SCHOOL_ID"] == "Upper" and row["FACULTY_ID"]}
   
-      
+
 def get_zoom_links():
   Links = {}
   try:

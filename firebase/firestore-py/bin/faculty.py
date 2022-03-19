@@ -17,7 +17,7 @@ if __name__ == "__main__":
   section_teachers = utils.logger.log_value(
     "section teachers", section_reader.get_section_faculty_ids
     )
-
+ 
   faculty_sections = utils.logger.log_value(
     "faculty sections", lambda: faculty_logic.get_faculty_sections(
       faculty = faculty,
