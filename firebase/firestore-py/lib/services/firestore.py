@@ -1,6 +1,7 @@
 from firebase_admin import _DEFAULT_APP_NAME, firestore
 from .firebase import app
 from .. import data
+from itertools import islice
 
 _firestore = firestore.client()
 
@@ -22,7 +23,11 @@ def upload_month(month, data):
 		"calendar": [(day.to_json() if day is not None else None) for day in data]
 	})
 
-def upload_sections(sections): 
+def upload_sections(sections):
+	if len(sections) > 500:
+		upload_sections(sections[:500])
+		upload_sections(sections[500:])
+		return
 	batch = _firestore.batch()
 	for section in sections:
 		batch.set(courses.document(section.id), section.to_json())
