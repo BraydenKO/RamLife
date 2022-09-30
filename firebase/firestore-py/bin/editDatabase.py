@@ -24,11 +24,11 @@ else:
 
 meetings = []    
 for day in utils.constants.day_names:
-    print(f"Enter periods for {day} in - p1 room1,p2 room2,p3 room3... - format")
+    print(f"Enter periods for {day} in - p1 room1, p2 room2, p3 room3... - format")
     print( "If there are no periods that day, press enter")
     periodsstr = input(": ")
     if periodsstr == "": continue
-    periods = periodsstr.split(",")
+    periods = periodsstr.split(", ")
     for period in periods:
         p, room = period.split(" ")
         meetings.append([day, p, room]) 
