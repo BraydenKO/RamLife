@@ -30,11 +30,7 @@ def get_section_faculty_ids():
       for row in csv.DictReader(file)
       if row["SCHOOL_ID"] == "Upper" and row["FACULTY_ID"]}
   
-<<<<<<< HEAD
-      
-=======
 
->>>>>>> 9019c375d1f93986b010b314f43c7c9299bde993
 def get_zoom_links():
   Links = {}
   try:
@@ -43,7 +39,6 @@ def get_zoom_links():
         if row["LINK"]:
           Links[row["EMAIL"]] = row["LINK"]
 
-<<<<<<< HEAD
   except FileNotFoundError:
     logger.warning("zoom_links.csv doesn't exist. Cannot grab data. Using an empty dictionary instead")
 
@@ -53,17 +48,6 @@ def get_zoom_links():
         Links[row["ID"]] = row["LINK"]
 
   except FileNotFoundError:
-=======
-  except FileNotFoundError:
-    logger.warning("zoom_links.csv doesn't exist. Cannot grab data. Using an empty dictionary instead")
-
-  try:
-    with open(dir.special_zoom_links) as file:
-      for row in csv.DictReader(file):
-        Links[row["ID"]] = row["LINK"]
-
-  except FileNotFoundError:
->>>>>>> 9019c375d1f93986b010b314f43c7c9299bde993
     logger.warning("No special zoom links")
   
   return Links
