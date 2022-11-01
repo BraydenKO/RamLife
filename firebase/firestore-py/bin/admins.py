@@ -12,7 +12,7 @@ def get_admins():
 
 def set_claims(admins): 
 	for email, scopes in admins.items(): 
-		if not all(scope in firebase.SCOPES for scope in scopes): 
+		if not all(scope in firebase.SCOPES or scope == '' for scope in scopes): 
 			raise ValueError(f"Unrecognized scopes for {email}: {scopes}")
 		utils.logger.verbose(f"Setting claims for {email}")
 		if not scopes: 
