@@ -10,12 +10,15 @@ This handles reading sports.csv and its logic all in one (faster!)
 KEYWORDS = {
     "BVH": "Boys Varsity Hockey",
     "BJVH": "Boys JV Hockey",
+    
     "GVBB": "Girls Varsity Basketball",
     "GJVBB": "Girls JV Basketball",
+
     "BVBB": "Boys Varsity Basketball",
     "BJVBB": "Boys JV Basketball",
+
     "GVVB": "Girls Varsity Volleyball",
-    "GJVBB": "Girls JV Volleyball"
+    "GJVVB": "Girls JV Volleyball"
 }
 
 def read_sports():
@@ -30,7 +33,7 @@ def read_sports():
 
             date = get_date(year, row["Date"])
 
-            scores = {"isHome": isHome, "other":0, "ramaz":0}
+            scores = None
 
             try:
                 team = KEYWORDS[row["Team"]]
@@ -45,7 +48,7 @@ def read_sports():
 
             start = row["Time"].split(" ")[0] # The split(" ")[0] gets rid of " PM" if it's in the time
             try:
-                start_hour = int(start[:start.index(":")])
+                start_hour = int(start[:start.index(":")]) + 12
                 start_min = int(start[start.index(":")+1:])
 
                 end_min = start_min + 30
