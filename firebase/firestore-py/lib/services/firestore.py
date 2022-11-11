@@ -11,6 +11,7 @@ calendar = _firestore.collection("calendar")
 courses = _firestore.collection("classes")
 feedback = _firestore.collection("feedback")
 dataRefresh = _firestore.collection("dataRefresh")
+sports = _firestore.collection("sports2")
 
 def upload_users(users): 
 	batch = _firestore.batch()
@@ -69,3 +70,7 @@ def update_user(users, section_id, meetings):
 	
 	batch.commit()
 
+def upload_sports(sports_games):
+	from datetime import date
+	year = date.today().strftime("%Y")
+	sports.document(year).set({"games": sports_games})
