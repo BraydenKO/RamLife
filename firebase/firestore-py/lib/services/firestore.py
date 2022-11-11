@@ -1,8 +1,6 @@
-from turtle import update
 from firebase_admin import _DEFAULT_APP_NAME, firestore
 from .firebase import app
 from .. import data
-from itertools import islice
 
 _firestore = firestore.client()
 
