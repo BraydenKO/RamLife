@@ -4,17 +4,21 @@ from collections import defaultdict
 import lib.data as data
 import lib.utils as utils
 
-def read_students():
-	with open(utils.dir.students) as file: return {
-		row ["ID"]: data.User(
-			first = row ["First Name"],
-			last = row ["Last Name"],
-			email = row ["Email"].lower(),
-			id = str(int(float(row ["ID"]))),
-		)
-		for row in csv.DictReader(file)
-		if row ["ID"] not in utils.constants.corrupted_students
-	}
+def read_students(): 
+	with open(utils.dir.students) as file: 
+		return_dict = {}
+		for row in csv.DictReader(file):
+			if row["ID"] == '': print(f"No ID for {row['Email']}")
+			if row ["ID"] in utils.constants.corrupted_students: continue
+
+			return_dict[row["ID"]] = data.User(
+				first = row ["First Name"],
+				last = row ["Last Name"],
+				email = row ["Email"].lower(),
+				id = str(row ["ID"]),
+			)
+		return return_dict
+
 
 def read_periods():
 	homeroom_locations = {}

@@ -29,6 +29,9 @@ testers:
   gershmane@ramaz.org: 
     first: "Ezra"
     last: "Gershman"
+  jankelovitsb@ramaz.org:
+    first: "Barbara"
+    last: "Jankelovits"
 
 ignoredStudents: 
   - "ID"
