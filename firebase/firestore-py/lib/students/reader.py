@@ -19,33 +19,19 @@ def read_students():
 def read_periods():
 	homeroom_locations = {}
 	periods = defaultdict(list)
-<<<<<<< HEAD
-	with open(utils.dir.section_schedule) as file:
-		for row in csv.DictReader(file):
-			if row ["SCHOOL_ID"] != "Upper":
-				continue
-=======
 	with open(utils.dir.section_schedule) as file: 
 		for row in csv.DictReader(file):
 			if row ["SCHOOL_ID"] != "Upper": continue
->>>>>>> 9019c375d1f93986b010b314f43c7c9299bde993
 			section_id = row ["SECTION_ID"]
 			day = row ["WEEKDAY_NAME"]
 			period_str = row ["BLOCK_NAME"]
 			room = row ["ROOM"]
 			# Handle homerooms
-<<<<<<< HEAD
-			#Note: converts to a float in case period_str is a str of a float
-			try: period_num = int(float(period_str))
-			except ValueError:
-				if period_str == "HOMEROOM":
-=======
 			try: 
 				period_num = int(float(period_str))
 				 
 			except ValueError:
 				if period_str == "HOMEROOM": 
->>>>>>> 9019c375d1f93986b010b314f43c7c9299bde993
 					homeroom_locations [section_id] = room
 				continue
 			periods [section_id].append(data.Period(

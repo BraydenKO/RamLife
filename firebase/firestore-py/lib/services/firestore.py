@@ -1,8 +1,5 @@
-from turtle import update
 from firebase_admin import _DEFAULT_APP_NAME, firestore
-from .firebase import app
 from .. import data
-from itertools import islice
 
 _firestore = firestore.client()
 
@@ -54,6 +51,9 @@ def upload_caldate(date):
 
 # Note: users is a list of emails (str) not User objects
 def update_user(users, section_id, meetings):
+	if len(users) > 10: 
+		update_user(users[10:], section_id, meetings)
+		users = users[:10]
 	query = students.where("email", "in", users).stream()
 	batch = _firestore.batch()
 	for user in query:
