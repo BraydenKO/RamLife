@@ -55,7 +55,7 @@ def read_sports():
                 end_min = start_min + 30
                 end_hour = start_hour + 1
 
-                if end_min > 60:
+                if end_min >= 60:
                     end_hour += end_min // 60
                     end_min = end_min % 60
 
