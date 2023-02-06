@@ -65,7 +65,7 @@ def get_periods(schedule, period, day_num = None):
       id = line.split("  ")[-1]
       room_line = schedule[idx + 1]
       if "HR" not in room_line:
-        print(id, day_num, period)
+        
         if ":" in room_line:
           room = room_line[0:room_line.index(":")-len(period)]
         else:
@@ -93,13 +93,18 @@ def get_periods(schedule, period, day_num = None):
       day_num += 1
       id = line.split("  ")[-1]
       room_line = schedule[idx + 1]
-
+      
       if day_num != 4:
-        room = room_line[0:room_line.index(":")-len(period)]
+        if ":" in room_line:
+          room = room_line[0:room_line.index(":")-len(period)]
+        else:
+          room = room_line[:-len(period)]
+          add_free = True
+          num_frees = 1
       else:
         room = room_line
 
-      room, add_free, num_frees = has_free(room, period)
+      room, add_free, num_frees = has_free(room, period, add_free, num_frees)
 
       classes.append(Period(room,id, days[day_num], period))
     
@@ -143,11 +148,8 @@ def has_free(room, period, add_free = False, num_frees = 0):
 
 def build_schedule(lines):
   classes = []
-  print(lines)
   for period in range(1,11):
     classes = classes + get_periods(lines, period)
-  
-  print(classes)
   schedule = {day: [] for day in days}
   day_num = 0
   period = 1
