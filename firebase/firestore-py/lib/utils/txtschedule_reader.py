@@ -13,10 +13,10 @@ def read_pdf(file):
   # Open the PDF file
   with open(schedules_dir / file, 'rb') as file:
       # Create a PDF reader object
-      reader = PyPDF2.PdfFileReader(file)
+      reader = PyPDF2.PdfReader(file)
 
       # Read the number of pages in the PDF
-      num_pages = reader.numPages
+      num_pages = len(reader.pages)
 
       # Holds the lines of texts
       all_lines = []
@@ -24,10 +24,10 @@ def read_pdf(file):
       # Iterate through all the pages
       for i in range(num_pages):
           # Get the page object
-          page = reader.getPage(i)
+          page = reader.pages[i]
 
           # Extract the text from the page
-          text = page.extractText()
+          text = page.extract_text()
           lines = text.split("\n")
           all_lines = all_lines + lines
       
@@ -50,23 +50,33 @@ def get_periods(schedule, period, day_num = None):
   add_free = False
   num_frees = 0
 
+  
   for idx, line in enumerate(schedule):
     if skip:
       skip = False
       continue
 
     if line.startswith(period + ":"):
+      if len(period.split(" ")) > 1:
+        period = period.split(" ")[0]
+        
       read = True
 
       id = line.split("  ")[-1]
       room_line = schedule[idx + 1]
       if "HR" not in room_line:
-        room = room_line[0:room_line.index(":")-len(period)]
+        print(id, day_num, period)
+        if ":" in room_line:
+          room = room_line[0:room_line.index(":")-len(period)]
+        else:
+          room = room_line[:-len(period)]
+          add_free = True
+          num_frees = 1
       else:
         room = room_line[0:room_line.index("H")]
         skip = True
 
-      room, add_free, num_frees = has_free(room, period)
+      room, add_free, num_frees = has_free(room, period,add_free,num_frees)
 
       classes.append(Period(room,id, days[day_num], period))
       continue
@@ -76,7 +86,10 @@ def get_periods(schedule, period, day_num = None):
           day_num += 1
           classes.append(Period(room=None,id=None, day=days[day_num], period=period))
         add_free = False
+        num_frees = 0
 
+      if day_num==4:
+        break
       day_num += 1
       id = line.split("  ")[-1]
       room_line = schedule[idx + 1]
@@ -92,12 +105,21 @@ def get_periods(schedule, period, day_num = None):
     
     if day_num == 4:
       break
-  
+
+    # Friday 3rd period is a free
+    if line.startswith(period + " HR"):
+      read = True
+      #print("YOOOOOO")
+      #print(Period(room=None,id=None, day=days[day_num], period=period))
+      classes.append(Period(room=None,id=None, day=days[day_num], period=period))
+
   else:
-    classes.append(Period(room=None,id=None, day=days[day_num], period=period))
+    
+    classes.append(Period(room=None,id=None, day=days[day_num], period=period.split(" ")[0]))
     day_num += 1
-    period = period + " " + period + ":"
-    classes = get_periods(schedule,period,day_num)
+    period = period + " " + period.split(" ")[0]
+
+    classes = classes + get_periods(schedule,period,day_num)
 
   
   return classes
@@ -108,13 +130,24 @@ def has_free(room, period, add_free = False, num_frees = 0):
     room, add_free, num_frees = has_free(room[:-(1+len(period))], period, add_free=True, num_frees=num_frees)
     return room, add_free, num_frees
   else:
+
+    try: 
+      int(room[1])
+      if len(room) > 4:
+        room = room[:4]
+        add_free = True
+        num_frees += 1
+    except:
+      ...
     return room, add_free, num_frees 
 
 def build_schedule(lines):
   classes = []
+  print(lines)
   for period in range(1,11):
     classes = classes + get_periods(lines, period)
-
+  
+  print(classes)
   schedule = {day: [] for day in days}
   day_num = 0
   period = 1
