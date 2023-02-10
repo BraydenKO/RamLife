@@ -28,7 +28,7 @@ elif choice == "p":
     lines = reader.read_pdf(file)
     schedule = reader.build_schedule(lines)
     print(f"Enter email for {reader.get_name(lines)}")
-    user = input(": ")
+    user = input(": ").lower()
     students.append(user)
     schedules.append(schedule)
 
@@ -37,12 +37,13 @@ elif choice == "p":
       "data update", lambda: services.update_user_beta(students, schedules)
     )
   else:
-    print(students)
-    print("--------")
-    print(schedules)
+    for i in range(len(students)):
+      print(students[i])
+      print(schedules[i])
+    print("-----------")
 
   quit()
-  
+
 else:
     print("Please enter a proper answer, a or c")
     quit()

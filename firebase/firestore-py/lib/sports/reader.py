@@ -51,14 +51,9 @@ def read_sports():
                 start_hour = int(start[:start.index(":")]) + 12
                 start_min = int(start[start.index(":")+1:])
 
-                # Assume games take 1.5 hours
-                end_min = start_min + 30
+                # Assume games take 1 hour
+                end_min = start_min
                 end_hour = start_hour + 1
-
-                if end_min >= 60:
-                    end_hour += end_min // 60
-                    end_min = end_min % 60
-
 
             except:
                 start_hour, start_min, end_hour, end_min = 0, 0, 0, 0

@@ -15,7 +15,7 @@ def read_students():
 				first = row ["First Name"],
 				last = row ["Last Name"],
 				email = row ["Email"].lower(),
-				id = str(row ["ID"]),
+				id = row ["ID"],
 			)
 		return return_dict
 

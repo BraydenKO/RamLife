@@ -106,10 +106,11 @@ def update_user_beta(users, schedules):
     user_dict = user.to_dict()
     email = user_dict['email']
     schedule = user_to_sched[email]
-
+ 
     for day, sched in schedule.items():
       for period in sched:
-        user_dict[day][int(period.period) - 1] = {
+        
+        user_dict[day][int(period.period) - 1] = None if period.room == None else {
           'room': period.room,
           'dayName': day,
           'id': period.id,
