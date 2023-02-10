@@ -27,7 +27,7 @@ if __name__ == '__main__':
 		)
 	)
 
-	print(homeroom_locations, homerooms)
+	print(schedules)
 
 	student_reader.set_students_schedules(
 		schedules = schedules,

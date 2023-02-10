@@ -84,7 +84,8 @@ def get_periods(schedule, period, day_num = None):
       if add_free:
         for _ in range(num_frees):
           day_num += 1
-          classes.append(Period(room=None,id=None, day=days[day_num], period=period))
+          classes.append(None)
+          #classes.append(Period(room=None,id=None, day=days[day_num], period=period))
         add_free = False
         num_frees = 0
 
@@ -116,11 +117,12 @@ def get_periods(schedule, period, day_num = None):
       read = True
       #print("YOOOOOO")
       #print(Period(room=None,id=None, day=days[day_num], period=period))
-      classes.append(Period(room=None,id=None, day=days[day_num], period=period))
+      classes.append(None)
+      #classes.append(Period(room=None,id=None, day=days[day_num], period=period))
 
   else:
-    
-    classes.append(Period(room=None,id=None, day=days[day_num], period=period.split(" ")[0]))
+    classes.append(None)
+    #classes.append(Period(room=None,id=None, day=days[day_num], period=period.split(" ")[0]))
     day_num += 1
     period = period + " " + period.split(" ")[0]
 

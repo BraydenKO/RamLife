@@ -108,12 +108,15 @@ def update_user_beta(users, schedules):
     schedule = user_to_sched[email]
 
     for day, sched in schedule.items():
-      for period in sched:
-        user_dict[day][int(period.period) - 1] = {
-          'room': period.room,
-          'dayName': day,
-          'id': period.id,
-          'name': period.period
-        }
+      for p_num,period in enumerate(sched):
+        if period is not None:
+          user_dict[day][p_num] = {
+            'room': period.room,
+            'dayName': day,
+            'id': period.id,
+            'name': period.period
+          }
+        else:
+          user_dict[day][p_num] = None
     batch.set(students.document(user_dict['email']), user_dict)
   batch.commit()
