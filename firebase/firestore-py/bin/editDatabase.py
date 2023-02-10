@@ -27,6 +27,8 @@ elif choice == "p":
   for file in files:
     lines = reader.read_pdf(file)
     schedule = reader.build_schedule(lines)
+    
+    print(f"Verify?\n{schedule}")
     print(f"Enter email for {reader.get_name(lines)}")
     user = input(": ").lower()
     students.append(user)
