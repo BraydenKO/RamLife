@@ -74,6 +74,7 @@ def get_schedules(students, periods, student_courses, semesters):
 	ignored = set()
 
 	for student, courses in student_courses.items():
+		if "." in student: student = str(int(float(student)))
 		student = students [student]
 		for section_id in courses:
 			if "UADV" in section_id:
