@@ -28,6 +28,7 @@ def read_pdf(file):
 
           # Extract the text from the page
           text = page.extract_text()
+          print(text)
           lines = text.split("\n")
           all_lines = all_lines + lines
       
