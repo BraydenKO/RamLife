@@ -1,5 +1,13 @@
 class Feedback:
 	def __init__(self, message, email, name, is_anonymous, timestamp):
+		"""
+		Args:
+			message (str): the message
+			email (str): the user's email
+			name (str): the user's name
+			is_anonymous (bool): if the user is anonymous
+			timestamp (DatetimeWithNanoseconds): exact timestamp of message
+		"""
 		self.message = message
 		self.email = email
 		self.name = name

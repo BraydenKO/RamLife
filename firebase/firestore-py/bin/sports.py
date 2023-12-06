@@ -1,3 +1,5 @@
+"""This script updates and adds sports to database
+based on sports.csv"""
 from lib.sports import reader as sports_reader
 from lib import services
 from lib import utils

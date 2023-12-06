@@ -1,3 +1,4 @@
+"""Collects and logs the feedbacks written in the app"""
 from firebase_admin import delete_app
 
 import lib.utils as utils

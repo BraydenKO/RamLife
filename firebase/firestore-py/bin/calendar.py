@@ -1,3 +1,6 @@
+"""This script creates an empty calendar for the proper
+year that this script is ran in.
+"""
 from firebase_admin import delete_app
 import csv
 
@@ -12,6 +15,16 @@ def is_special_line(index): (index - 5) % 7 == 0
 SUMMER_MONTHS = {7, 8}
 
 def get_calendar(month): 
+	"""TODO: Is this function necessary?
+			Does it even work?
+		Returns calendar data for a specific month
+
+	Args:
+		month (int): index of month (1-based)
+
+	Returns:
+		list: listof each day and it's data
+	"""
 	with open(utils.dir.get_month(month)) as file: 
 		lines = list(csv.reader(file))
 

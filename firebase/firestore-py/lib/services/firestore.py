@@ -38,7 +38,7 @@ def get_month(month):
 
 def get_feedback(): return [
   data.Feedback.from_json(document.to_dict())
-  for document in feedback.get()
+  for document in feedback.stream()
 ]
 
 def upload_userdate(date):

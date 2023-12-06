@@ -1,3 +1,6 @@
+"""This script updates and adds faculty to database
+based on faculty.csv"""
+
 from lib import utils
 from lib.faculty import reader as faculty_reader
 from lib.sections import reader as section_reader

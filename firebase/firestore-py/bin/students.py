@@ -1,3 +1,5 @@
+"""This script updates and adds students to database
+based on schedule.csv, students.csv, section_schedule.csv, and section.csv"""
 from lib import data
 from lib import utils
 from lib.students import reader as student_reader

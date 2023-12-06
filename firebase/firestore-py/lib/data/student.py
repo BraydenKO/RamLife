@@ -11,6 +11,11 @@ class DayDefaultDict(dict):
 
 class User:
 	def verify_schedule(users): 
+		"""verifies schedules for users
+
+		Args:
+			users (list): list of students
+		"""
 		missing_schedules = {user for user in users if user.has_no_classes()}
 		if (missing_schedules): 
 			utils.logger.warning(f"Misisng schedules for {missing_schedules}")
@@ -21,9 +26,24 @@ class User:
 	]
 
 	def __init__(self, first, last, email, id, homeroom=None, homeroom_location=None, schedule=None):
+		"""Creates User object
+
+		Args:
+			first (str): first name
+			last (str): last name
+			email (str): email
+			id (str): user id
+			homeroom (str, optional): homeroom. Defaults to None.
+			homeroom_location (str, optional): homeroom room. Defaults to None.
+			schedule (DayDefaultDict, optional): user schedule. Defaults to None.
+   
+		Raises:
+			AssertionError: If user has a schedule and either both homeroom 
+   				and homeroom_location are None or there is no schedule 
+				for any non-weekend day.
+		"""
 		if not id:
-			print(f"Could not find id for user: {first} {last}, {email}")
-			print("Moving on")
+			utils.logger.warning(f"Could not find id for user: '{first} {last}', '{email}'")
 
 		# assert first and last and email, f"Could not find contact info for {self}"
 		self.first = first
@@ -40,6 +60,16 @@ class User:
 			assert day_name in schedule, f"{self} does not have a schedule for {day_name}"
 
 	def empty(email, first, last): 
+		"""Create "empty" user
+
+		Args:
+			email (str): user email
+			first (str): first name
+			last (str): last time
+
+		Returns:
+			User: user
+		"""
 		user = User(
 			first = first,
 			last = last,
@@ -56,6 +86,11 @@ class User:
 		return f"{self.first} {self.last} ({self.id})"
 
 	def has_no_classes(self):
+		"""Checks if user has 0 classes
+
+		Returns:
+			bool: if user has 0 classes
+		"""
 		return all(
 		all(period is None for period in day)
 		for day in self.schedule
