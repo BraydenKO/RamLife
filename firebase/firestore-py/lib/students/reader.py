@@ -5,10 +5,15 @@ import lib.data as data
 import lib.utils as utils
 
 def read_students(): 
+	"""gets student data from students.csv
+
+	Returns:
+		dict: mapping student ids to [User] objects
+	"""
 	with open(utils.dir.students) as file: 
 		return_dict = {}
 		for row in csv.DictReader(file):
-			if row["ID"] == '': print(f"No ID for {row['Email']}")
+			if row["ID"] == '': utils.logger.warning(f"No ID for '{row['Email']}'")
 			if row ["ID"] in utils.constants.corrupted_students: continue
 
 			return_dict[row["ID"]] = data.User(
@@ -21,6 +26,12 @@ def read_students():
 
 
 def read_periods():
+	"""reads section_schedule.csv to make a mapping of section ids
+		to a list of its periods
+
+	Returns:
+		dict: mapping section ids to list of [Period] objects
+	"""
 	homeroom_locations = {}
 	periods = defaultdict(list)
 	with open(utils.dir.section_schedule) as file: 
@@ -47,6 +58,12 @@ def read_periods():
 	return periods
 
 def read_student_courses():
+	"""get student schedule data from schedule.csv
+
+	Returns:
+		dict: mapping student ids to a list of the ids for the sections
+			they're in.
+	"""
 	courses = defaultdict(list)
 	with open(utils.dir.schedule) as file:
 		for row in csv.DictReader(file):
@@ -57,6 +74,11 @@ def read_student_courses():
 	return courses
 
 def read_semesters():
+	"""gets data on which semester the section is in
+
+	Returns:
+		dict: mapping section ids to [Semesters] object
+	"""
 	with open(utils.dir.section) as file: return {
 		row ["SECTION_ID"]: data.Semesters(
 			semester1 = row ["TERM1"] == "Y",
@@ -68,6 +90,22 @@ def read_semesters():
 	}
 
 def get_schedules(students, periods, student_courses, semesters): 
+	"""builds student schedule
+	Args:
+		students (dict): mapping student ids to [User] objects
+		periods (dict): mapping section ids to list of [Period] objects
+		student_courses (dict): mapping student ids to a list of the ids for the sections
+			they're in.
+		semesters (dict): mapping section ids to [Semesters] object
+
+	Raises:
+		error: a section was found in schedule.csv but not sections.csv
+
+	Returns:
+		dict: dict mapping student [User] objects to their schedules
+		dict: dict mapping student [User] objects to their hoomroom section id
+		set: set containing seniors' ids
+	"""
 	homerooms = {}
 	seniors = set()
 	result = defaultdict(data.DayDefaultDict)
@@ -107,6 +145,13 @@ def get_schedules(students, periods, student_courses, semesters):
 	return result, homerooms, seniors
 
 def set_students_schedules(schedules, homerooms, homeroom_locations):
+	"""add the schedule, homeroom, and homeroom location to the student
+
+	Args:
+		schedules (dict): mapping student [User] objects to schedules
+		homerooms (dict): mapping student [User] objects to their hoomroom section id
+		homeroom_locations (dict): mapping homeroom section ids to home room locations
+	"""
 	for student, schedule in schedules.items():
 		if student.id in utils.constants.ignored_students: continue
 		student.homeroom = "SENIOR_HOMEROOM" if student not in homerooms else homerooms [student]

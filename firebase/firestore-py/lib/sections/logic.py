@@ -1,20 +1,18 @@
 from ..data.schedule import Section
 
-'''
-A collection of functions to index course data.
-
-No function in this class reads data from the data files, just works on them. 
-This helps keep the program modular by seperating the data from 
-the data indexing
-'''
-
-# Converts a section ID to a course ID.
 def get_course_id(section_id):
-  result = section_id[0:section_id.index("-")]
+  """Given a section id, get its course id
+
+  Args:
+      section_id (str): section id
+
+  Returns:
+      str: course id
+  """
+  result = section_id[:section_id.index("-")]
   if result.startswith("0"):
     return result[1:]
-  else:
-    return result
+  return result
 
   # Builds a list of [Section] objects.
   # 
@@ -28,6 +26,17 @@ def get_course_id(section_id):
   # in order to keep the data and logic layers separate.
 
 def get_sections(course_names, section_teachers, faculty_names, zoom_links):
+  """Builds a list of [Section] objects
+
+  Args:
+      course_names (dict): mapping course ids to course names
+      section_teachers (dict): mapping section ids to faculty ids
+      faculty_names (dict): mapping faculty ids to [User] objects
+      zoom_links (dict): mapping faculty emails to their zoom_link (str)
+
+  Returns:
+      list: list of all [Section] objects
+  """
   return [
     Section(
       id = key,

@@ -1,3 +1,8 @@
+"""Hopefully deprecated script. This script allows you to
+add a section using its ID, Name, Teacher, and Meeting Time.
+change a section's ID and Meeting Time.
+update a schedule using a pdf of their schedule (NOTE: Very finicky)
+"""
 from lib.data.schedule import Section
 from lib import utils, services
 

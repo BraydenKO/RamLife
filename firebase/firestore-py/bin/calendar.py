@@ -1,10 +1,15 @@
+"""This script creates an empty calendar for the proper
+year that this script is ran in.
+"""
 from firebase_admin import delete_app
 import csv
 
 import lib.services as firebase
 import lib.utils as utils
-
+from lib import services
 import lib.data as data
+from datetime import date
+
 def is_date_line(index): (index - 2) % 7 == 0
 def is_letter_line(index): (index - 4) % 7 == 0
 def is_special_line(index): (index - 5) % 7 == 0
@@ -12,6 +17,16 @@ def is_special_line(index): (index - 5) % 7 == 0
 SUMMER_MONTHS = {7, 8}
 
 def get_calendar(month): 
+	"""TODO: Is this function necessary?
+			Does it even work?
+		Returns calendar data for a specific month
+
+	Args:
+		month (int): index of month (1-based)
+
+	Returns:
+		list: listof each day and it's data
+	"""
 	with open(utils.dir.get_month(month)) as file: 
 		lines = list(csv.reader(file))
 
@@ -46,8 +61,14 @@ if __name__ == '__main__':
 		)
 		verified = data.Day.verify_calendar(month, month_calendar)
 		assert verified, f"Could not properly parse calendar for {month}"
-		if (utils.args.should_upload): 
+		if utils.args.should_upload: 
 			firebase.upload_month(month, month_calendar)
+
+			today = date.today().strftime("%Y-%m-%d")
+			utils.logger.log_progress(
+				"date upload",
+				lambda: services.upload_userdate(today)
+		)
 
 	# Cleanup
 	if not utils.args.should_upload: 

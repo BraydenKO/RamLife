@@ -1,22 +1,27 @@
 import csv
 from ..utils import dir, logger
 
-'''
-A collection of functions to read course data.
-
-No function in this class actually performs logic on data, just returns it.
-his helps keep the program modular, by separating the data sources from
-the data indexing.
-'''
-# fixes ids of form "90070.0" to look like "90070"
-# but allows ids of CADV
 def fix_id(id):
+  """fixes ids of the form "90070.0" to look like "90070"
+
+  Args:
+      id (str): an id, for example "90070","90070.0", 
+        or "CADV"
+
+  Returns:
+      str: correct(ed) id
+  """
   try:
     return str(int(float(id)))
   except ValueError:
     return id
     
 def get_course_names():
+  """ Reads courses data from courses.csv
+  
+  Returns:
+      dict: mapping course ids to course names
+  """
   with open(dir.courses) as file:
     return {
       fix_id(row["Course ID"]): row["Course Name"]
@@ -24,6 +29,11 @@ def get_course_names():
       if row["School ID"] == "Upper"}
   
 def get_section_faculty_ids():
+  """Reads sections data from section.csv
+  
+  Returns:
+      dict: mapping section ids to faculty ids
+  """
   with open(dir.section) as file: 
     return {
       row["SECTION_ID"]: row["FACULTY_ID"]
@@ -32,6 +42,11 @@ def get_section_faculty_ids():
   
 
 def get_zoom_links():
+  """Reads zoom_links data from zoom_links.csv
+
+  Returns:
+      dict: mapping teacher emails to zoom links
+  """
   Links = {}
   try:
     with open(dir.zoom_links) as file:

@@ -14,7 +14,17 @@ KEYWORDS = {
 
 class SportsGame():
     def __init__(self, opponent,location,date, livestream_url, scores, team,start):
+        """Creates SportsGame object
 
+        Args:
+            opponent (str): who the school is playing against
+            location (str): location of game
+            date (str): date of game
+            livestream_url (str): livestream url
+            scores (str): scores for the game
+            team (str): which school team (see KEYWORDS)
+            start (str): start time of the game
+        """
         self.opponent = opponent
         self.is_home = location == "Home"
         self.date = date

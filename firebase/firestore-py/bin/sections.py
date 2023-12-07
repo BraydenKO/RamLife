@@ -1,3 +1,6 @@
+"""This script updates and adds sections to database
+based on courses.csv, section.csv, faculty.csv, and zoom_links.cs
+and special_zoom_links.csv (if zoom links are being used)"""
 from lib.utils import logger
 from lib.sections import reader as section_reader
 from lib.faculty import reader as faculty_reader

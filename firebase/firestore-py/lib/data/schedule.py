@@ -1,5 +1,14 @@
 class Semesters: 
 	def __init__(self, semester1, semester2, section_id): 
+		"""
+		Args:
+			semester1 (bool): is this section in semester 1
+			semester2 (bool): is this section in semester 2
+			section_id (str): id of section
+
+		Raises:
+			AssertionError: If both semester 1 and 2 and None
+		"""
 		self.semester1 = semester1
 		self.semester2 = semester2
 		self.section_id = section_id
@@ -10,6 +19,14 @@ class Semesters:
 
 class Section: 
 	def __init__(self, name, id, teacher, zoom_link): 
+		"""Creates a Section object
+
+		Args:
+			name (str): name of section
+			id (str): id of section
+			teacher (str): name of teacher for section
+			zoom_link (str): zoom link of section
+		"""
 		self.name = name
 		self.id = id
 		self.teacher = teacher
@@ -34,6 +51,14 @@ class Period:
 	}
 
 	def __init__(self, room, id, day, period): 
+		"""Creates a Period object
+
+		Args:
+			room (str): room for this period
+			id (str): id of class
+			day (str): day of week
+			period (int): period num
+		"""
 		assert day is not None and period is not None, f"Could not read period data for {id}"
 		assert (id is None) == (room is None), f"If ID is None, room must be too (and vice versa): {day}, {period}, {id}"
 		self.room = room

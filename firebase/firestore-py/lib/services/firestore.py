@@ -12,18 +12,34 @@ dataRefresh = _firestore.collection("dataRefresh")
 sports = _firestore.collection("sports2")
 
 def upload_users(users): 
+  """upload list of users to firestore
+
+  Args:
+      users (list): list of [User] objects
+  """   
   batch = _firestore.batch()
   for user in users:
     batch.set(students.document(user.email), user.to_json())
   batch.commit()
 
-def upload_month(month, data): 
+def upload_month(month, data):
+  """uploads a month to firestore
+
+  Args:
+      month (int): index of month (1-based)
+      data (list): list of [Day] objects for each day in month
+  """   
   calendar.document(str(month)).update({
     "month": month,
     "calendar": [(day.to_json() if day is not None else None) for day in data]
   })
 
 def upload_sections(sections):
+  """uploads class sections to firestore
+
+  Args:
+      sections (list): list of [Section] objects
+  """
   if len(sections) > 500:
     upload_sections(sections[:500])
     upload_sections(sections[500:])
@@ -33,26 +49,56 @@ def upload_sections(sections):
     batch.set(courses.document(section.id), section.to_json())
   batch.commit()
 
-def get_month(month): 
+def get_month(month):
+  """get data for specific month
+
+  Args:
+      month (int): index of month (1-based)
+
+  Returns:
+      dict: dict of month data
+  """   
   return calendar.document(str(month)).get().to_dict()
 
-def get_feedback(): return [
-  data.Feedback.from_json(document.to_dict())
-  for document in feedback.get()
-]
+def get_feedback(): 
+  """get list of feedback from firestore
+
+  Returns:
+      list: list of [Feedback] objects
+  """
+  return [
+    data.Feedback.from_json(document.to_dict())
+    for document in feedback.stream()
+  ]
 
 def upload_userdate(date):
+  """update the date user were last updated
+
+  Args:
+      date (str): the date
+  """
   dataRefresh.document("dataRefresh").update({
     "user": date
   }) 
 
 def upload_caldate(date):
+  """_summary_
+
+  Args:
+      date (_type_): _description_
+  """
   dataRefresh.document("dataRefresh").update({
     "calendar": date
   })
 
-# Note: users is a list of emails (str) not User objects
 def update_user(users, section_id, meetings):
+  """updates user data for given section and meetings
+
+  Args:
+      users (list): list of user emails
+      section_id (str): section id
+      meetings (list): list of [day of week, period, room] elements
+  """
   if len(users) > 10: 
     update_user(users[10:], section_id, meetings)
     users = users[:10]
@@ -72,6 +118,11 @@ def update_user(users, section_id, meetings):
   batch.commit()
 
 def upload_sports(sports_games):
+  """uploads sports data to firestore
+
+  Args:
+      sports_games (list): list of [SportsGame] objects
+  """
   from datetime import date
   year = date.today().strftime("%Y")
   month = int(date.today().strftime("%m"))
@@ -91,6 +142,10 @@ def update_user_beta(users, schedules):
   
   Note: Reads the user's data first because not all of their data can be obtained from the PDF
         Ex: Homeroom info
+  
+  Args:
+      users (list): list of emails
+      schedules (list): list of dicts containing user schedules
   """
   if len(users) > 10: 
     update_user_beta(users[10:], schedules[10:])

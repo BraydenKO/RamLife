@@ -1,3 +1,4 @@
+"""This script will sign out all users from the app."""
 from firebase_admin import delete_app
 import lib.services as firebase
 import lib.utils as utils

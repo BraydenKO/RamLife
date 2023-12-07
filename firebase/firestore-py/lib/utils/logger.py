@@ -21,6 +21,14 @@ class ColorFormatter(logging.Formatter):
   }
 
   def format(self, record):
+    """format the record as text
+
+    Args:
+        record (LogRecord):
+
+    Returns:
+        str: formatted record
+    """
     color = self.FORMATS[record.levelno]
     if self.use_color: 
       formatter = logging.Formatter(f"{color}[{record.levelname[0]}]{reset} %(message)s")
@@ -29,14 +37,33 @@ class ColorFormatter(logging.Formatter):
     return formatter.format(record)
 
 def verbose(self, message, *args, **kwargs): 
+  """logs verbose message
+
+  Args:
+      message (str): message to log
+  """
   if self.isEnabledFor(logging.VERBOSE):
     self._log(logging.VERBOSE, message, args, **kwargs) 
 
 def debug(self, label, value, *args, **kwargs): 
+  """logs debug
+
+  Args:
+      label (str): label to the value
+      value (any): value to log
+  """
   if self.isEnabledFor(logging.DEBUG): 
     self._log(logging.DEBUG, f"{label}: {value}", args, **kwargs)
 
-def error(self, message, *args, **kwards): 
+def error(self, message, *args, **kwards):
+  """log an error
+
+  Args:
+      message (str): error message
+
+  Raises:
+      AssertionError: raise an error after logging it
+  """   
   if self.isEnabledFor(logging.ERROR):
     self._log(logging.ERROR, message, args, **kwards)
     raise AssertionError(message)
@@ -67,14 +94,18 @@ if args.debug:
   logger.addHandler(file_handler)
 
 def log_value(label, function):
-  """
-  Emits logs before and after returning a value.
+  """Emits logs before and after returning a value.
   
   Emits a [verbose] log before calling [func], then a [debug] log with the 
   result, and finally returns the result. 
   
   The [label] should be all lower case, since it will appear in the middle
   of the logged messages. 
+  
+  Args:
+      label (str): label to the function
+      function (function): function to be run and logged
+
   """
   logger.verbose(f"Getting {label}")
   value = function()
@@ -82,6 +113,15 @@ def log_value(label, function):
   return value
 
 def log_progress(label, function): 
+  """used for logging progress of the function. log
+    when function began and ended.
+  
+
+  Args:
+      label (str): label for what is being run (ex: data upload).
+        Should be lowercase since it will appear in the middle of the message.
+      function (function): function to be run
+  """
   logger.info(f"Starting {label}")
   function()
   logger.info(f"Finished {label}")

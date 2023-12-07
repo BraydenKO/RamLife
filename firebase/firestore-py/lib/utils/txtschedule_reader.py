@@ -1,3 +1,8 @@
+"""These functions should hopefully be forever deprecated.
+These functions are used to take a pdf of a student's schedule and convert
+it into a dictionary that will be uploaded to the database. It may be hard to read
+or grasp exactly why each line is necessary. 
+"""
 from ..data.schedule import Period
 from .dir import data_dir
 import os
@@ -7,9 +12,25 @@ schedules_dir = data_dir / "new student schedules"
 days = ["Friday", "Thursday", "Wednesday", "Tuesday", "Monday"]
 
 def get_files():
+  """get list of files in "new student schedules" folder
+
+  Returns:
+      list: list of paths to these schedules
+  """
   return os.listdir(schedules_dir)
 
 def read_pdf(file):
+  """reads pdf to a list of lines of text.
+  
+  Note:
+    Can be very finnicky and sensitive to slight changes in pdf.
+
+  Args:
+      file (str): file path
+
+  Returns:
+      list: line of text for this pdf
+  """
   # Open the PDF file
   with open(schedules_dir / file, 'rb') as file:
       # Create a PDF reader object
@@ -35,17 +56,34 @@ def read_pdf(file):
       return all_lines
 
 def get_name(lines):
+  """get name of the student
+
+  Args:
+      lines (list): list of lines of text
+
+  Returns:
+      str: student's name
+  """
   for line in lines:
     if line.startswith("GRADE"):
       return line
 
   return "Error in finding student details"
 
-def get_periods(schedule, period, day_num = None, search_tag = None, classes = None):
+def get_periods(schedule, period, day_num = None, classes = None):
+  """extract periods from text
+
+  Args:
+      schedule (list): list of lines of text for the schedule
+      period (int): int in range(1,11) referring to which period
+      day_num (int, optional): index of day of the week in reverse. Defaults to None.
+      classes (list, optional): list of [Period] objects to add this period to. Defaults to None.
+
+  Returns:
+      list: list of [Period] objects both initialized with (see Args) and extracted.
+  """
   if day_num is None:
     day_num = 0 if period <= 6 else 1
-  if search_tag is None:
-    search_tag = str(period)
   if classes is None:
     classes = []
   
@@ -137,7 +175,22 @@ def get_periods(schedule, period, day_num = None, search_tag = None, classes = N
 
   return classes
 
-def has_free(room, period, add_free = False, num_frees = 0):
+def has_free(room, period, num_frees = 0):
+  """extracts room and checks whether to add a free to
+    the students schedule. Frees look pretty different that normal
+    periods when reading text from a converted pdf and they may affect data around them. 
+    Hence why they get a special recursive (frees can happen multiple times in a row) function. 
+
+  Args:
+      room (str): room of period
+      period (str): period
+      num_frees (int, optional): number of frees user has. Defaults to 0.
+
+  Returns:
+      str: room
+      bool: whether to add a free
+      int: number of frees to add
+  """
   if " " in room:
     num_frees += 1
     room, add_free, num_frees = has_free(room[:-(1+len(period))], period, add_free=True, num_frees=num_frees)
@@ -151,10 +204,18 @@ def has_free(room, period, add_free = False, num_frees = 0):
         add_free = True
         num_frees += 1
     except:
-      ...
+      add_free = False
     return room, add_free, num_frees 
 
 def build_schedule(lines):
+  """given the lines, build the schedule.
+
+  Args:
+      lines (list): list of lines of text from pdf
+
+  Returns:
+      dict: mapping day names to period in that day for a specific user
+  """
   classes = []
   for period in range(1,11):
     classes = classes + get_periods(lines, period)
@@ -174,11 +235,3 @@ def build_schedule(lines):
       day_num += 1
   
   return schedule
-
-if __name__ == "__main__":
-  files = get_files()
-  lines = read_pdf(files[0])
-  #for line in lines:
-  #  print(line)
-  schedule = build_schedule(lines)
-  print(schedule)

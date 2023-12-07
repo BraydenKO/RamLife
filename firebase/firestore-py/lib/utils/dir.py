@@ -58,7 +58,13 @@ constants = project_dir / "constants.yaml"
 # List of future Ramaz sports games
 sports_schedule = data_dir / "sports.csv"
 
-# Returns the path for the calendar at a given month.
-# 
-# The month should follow 1-based indexing.
-def get_month(month): return data_dir / "calendar" / f"{month}.csv"
+def get_month(month): 
+    """returns path for specific month in calendar
+
+    Args:
+        month (int): index of month (1-based)
+
+    Returns:
+        Path: path to month specified
+    """
+    return data_dir / "calendar" / f"{month}.csv"

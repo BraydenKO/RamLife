@@ -9,6 +9,11 @@ it. This helps keep the program modular, by separating the data sources from
 the data indexing.
 '''
 def get_faculty():
+  """Gets faculty data from faculty.csv
+
+  Returns:
+      dict: dict mapping facults ids to [User] objects.
+  """
   with open(utils.dir.faculty) as file:
     return {row["USER_ID"]: student.User(
             first = row["FIRST_NAME"],
