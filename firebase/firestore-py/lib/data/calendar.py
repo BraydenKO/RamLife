@@ -17,14 +17,14 @@ current_month = date.today().month
 cal = calendar_model.Calendar(firstweekday=6)
 
 def get_default_calendar(month): 
-	"""Creates a list of Day objects for each day
+	"""Creates a list of [Day] objects for each day
  		in the given month
 
 	Args:
 		month (int): index of month (1-based)
 
 	Returns:
-		list: A list of Day objects for each day that month
+		list: A list of [Day] objects for each day that month
 	"""
 	result = []
 	year = get_year(month)
@@ -84,7 +84,7 @@ def get_empty_calendar(month):
 
 class Day: 
 	def get_list(date_line, name_line, special_line, month): 
-		"""create a list of Day objects given dates, names, specials,
+		"""create a list of [Day] objects given dates, names, specials,
 			and the month.
 
 		Todo:
@@ -97,7 +97,7 @@ class Day:
 			month (int): index of month (1-based)
 
 		Returns:
-			list: list of Day objects
+			list: list of [Day] objects
 		"""
 		return [
 			Day.raw(date=date, name=name, special=special, month=month)

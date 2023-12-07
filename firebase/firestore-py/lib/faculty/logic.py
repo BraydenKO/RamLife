@@ -4,26 +4,25 @@ from .. import utils
 from .. import data
 
 '''
-A collection of functions o index faculty data.
+A collection of functions for index faculty data.
 
 No function in this class reads data from the data files, just works logic
 on them. This helps keep the program modular, by separating the data sources
 from the data indexing
 '''
 
-'''
-Maps faculty to the sections they teach.
-
-This function works by taking several arguments: 
-
-- faculty, from [FacultyReader.get_faculty] 
-- sectionTeachers, from [SectionReader.get_section_faculty_ids]
-
-These are kept as parameters instead of calling the functions by itself
-in order to keep the data and logic layers separate. 
-'''
-
 def get_faculty_sections(faculty,section_teachers):
+  """Maps faculty to the sections they teach
+
+  Args:
+      faculty (dict): dict mapping faculty id to [User] objects
+      section_teachers (dict): dicts mapping sections ids
+        to faculty ids
+
+  Returns:
+      dict: dict mapping faculty [User] objects to their
+        sections'
+  """
   result = defaultdict(set)
   missing_emails = set()
   for section_id, faculty_id in section_teachers.items():
@@ -37,22 +36,19 @@ def get_faculty_sections(faculty,section_teachers):
     utils.logger.warning(f"Missing emails for {missing_emails}")
   return result
 
-'''
-Returns complete [User] objects.
-
-This function returns [User] objects with more properties than before.
-See [User.addSchedule] for which properties are added.
-
-This function works by taking several arguments:
-
- - faculty_sections from [get_faculty_sections]
- - section_periods from [student_reader.get_periods]
-
-These are kept as parameters instead of calling the functions by itself
-in order to keep the data and logic layers separate. 
-'''
-
 def get_faculty_with_schedule(faculty_sections, section_periods):
+  """Creates list of faculty [User] objects with their full schedule added
+    to the object.
+
+  Args:
+      faculty_sections (dict): dict mapping faculty [User] objects to their
+        sections'
+      section_periods (dict): dict mapping section ids to a list of 
+        periods when that section meets.
+
+  Returns:
+      list: list of completed [User] objects of each faculty
+  """
   # The schedule for each teacher
   schedules = {}
   
@@ -100,6 +96,6 @@ def get_faculty_with_schedule(faculty_sections, section_periods):
     schedule.populate(utils.constants.day_names)
     key.schedule = schedule
     result.append(key)
-
+  print(result)
   
   return result

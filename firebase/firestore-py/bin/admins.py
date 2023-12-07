@@ -44,7 +44,7 @@ if __name__ == '__main__':
 	utils.logger.info("Setting up admins...")
 	admins = utils.logger.log_value("admins", get_admins)
 	set_claims(admins)
-
+ 
 	delete_app(firebase.app)
 	utils.logger.info("Finished setting up admins")
 

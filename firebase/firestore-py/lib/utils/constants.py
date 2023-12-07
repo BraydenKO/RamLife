@@ -10,7 +10,16 @@ testers = None
 ignored_students = None
 ignored_sections = None
 
-def init(): 
+def init():
+	"""initializes these constants from constants.yaml:
+
+		day_names (list): list of names for non-weekend days in week 
+		corrupted_students (list): list of student ids that are corrupted
+		testers (list): list of dicts containin the email, first name and last name
+			of each tester.
+		ignored_students (list): list of student ids to ignore for any reason
+		ignored_sections (list): list of section ids to ignore for any reason
+	"""     
 	global day_names, corrupted_students, testers, ignored_students, ignored_sections
 	with open(dir.constants) as file: 
 		contents = yaml.safe_load(file)
